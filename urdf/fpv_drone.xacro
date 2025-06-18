@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="test_fpv_drone" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="fpv_drone" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="package_name" default="fpv_drone" />
   <xacro:arg name="namespace" default="fpv_drone" />
@@ -9,6 +9,9 @@
   <xacro:arg name="rgb_cw" default="0 0 1" />
   <xacro:arg name="rpy" default="0 0 0" />
   <xacro:arg name="xyz" default="0 0 0" />
+  <xacro:arg name="sitl" default="false" />
+  <xacro:arg name="gimbal" default="false" />
+  <xacro:arg name="instance" default="0" />
 
   <xacro:property name="package_name" value="$(arg package_name)" />
   <xacro:property name="namespace" value="$(arg namespace)" />
@@ -18,6 +21,9 @@
   <xacro:property name="rgb_cw" value="$(arg rgb_cw)" />
   <xacro:property name="rpy" value="$(arg rpy)" />
   <xacro:property name="xyz" value="$(arg xyz)" />
+  <xacro:property name="sitl" value="$(arg sitl)" />
+  <xacro:property name="gimbal" value="$(arg gimbal)" />
+  <xacro:property name="instance" value="$(arg instance)" />
 
   <xacro:property name="parent_link" value="${namespace}_footprint" />
 
@@ -29,4 +35,20 @@
     parent_link="${parent_link}" rgb_base="${rgb_base}" rgb_cam="${rgb_cam}"
     rgb_ccw="${rgb_ccw}" rgb_cw="${rgb_cw}" rpy="${rpy}" xyz="${xyz}" />
 
+  <xacro:if value="${sitl}">
+    <xacro:include filename="$(find fpv_drone)/urdf/macro_sitl_core.xacro" />
+    <xacro:macro_sitl_core namespace="${namespace}" instance="${instance}" />
+  </xacro:if>
+
+  <xacro:if value="${gimbal}">
+    <xacro:include filename="$(find fpv_drone)/urdf/macro_gimbal_3d.xacro" />
+    <xacro:macro_gimbal_3d_macro package_name="${package_name}" namespace="${namespace}"
+      parent_link="${parent_link}" rgb="${rgb_cam}" instance="${instance}"
+      rpy="1.5707963267948966 0 1.5707963267948966" xyz="0 0 -0.03925" />
+
+    <xacro:if value="${sitl}">
+      <xacro:include filename="$(find fpv_drone)/urdf/macro_sitl_gimbal.xacro" />
+      <xacro:macro_sitl_gimbal namespace="${namespace}" />
+    </xacro:if>
+  </xacro:if>
 </robot>

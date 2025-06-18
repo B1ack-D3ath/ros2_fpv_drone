@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <robot name="test_fpv_ardupilot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find fpv_drone)/urdf/macro_fpv_ardupilot.xacro" />
-
   <xacro:arg name="package_name" default="fpv_drone" />
   <xacro:arg name="namespace" default="fpv_drone" />
   <xacro:arg name="rgb_base" default="0.0625 0 0.25" />
@@ -25,7 +23,7 @@
 
   <xacro:property name="parent_link" value="${namespace}_footprint" />
 
-  <xacro:property name="use_sim_time" value="true" />
+  <xacro:include filename="$(find fpv_drone)/urdf/macro_fpv_ardupilot.xacro" />
 
   <link name="${parent_link}" />
 

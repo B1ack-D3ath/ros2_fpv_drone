@@ -4,11 +4,11 @@
   <xacro:macro name="macro_gimbal_3d"
     params="package_name:='fpv_drone' namespace:='fpv_drone' parent_link:='fpv_drone_footprint' rgb:='0 1 1' instance:='0' rpy:='0 0 0' xyz:='0 0 0'">
 
-    <xacro:property name="pi" value="3.141592653589793" />
-    <xacro:property name="use_sim_time" value="true" />
-
     <xacro:property name="namespace_gimbal" value="${namespace}_gimbal" />
     <xacro:property name="STREAM_PORT" value="${5600 + int(instance) * 10}" />
+
+    <xacro:property name="pi" value="3.141592653589793" />
+    <xacro:property name="use_sim_time" value="true" />
 
     <link name="${namespace_gimbal}_base_link">
       <inertial>

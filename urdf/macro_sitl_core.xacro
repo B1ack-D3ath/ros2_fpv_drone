@@ -53,17 +53,17 @@
       <xacro:macro_liftdrag_plugin motor_prefix="br" cp_vec="-0.042 -0.0727 0"
         fwd_vec="-0.866 0.5 0" />
 
-      <xacro:macro name="apply_joint_force_plugin_macro" params="motor_prefix">
+      <xacro:macro name="macro_apply_joint_force_plugin" params="motor_prefix">
         <plugin filename="gz-sim-apply-joint-force-system"
           name="gz::sim::systems::ApplyJointForce">
           <joint_name>${namespace}_motor_${motor_prefix}_joint</joint_name>
         </plugin>
       </xacro:macro>
 
-      <xacro:apply_joint_force_plugin_macro motor_prefix="fr" />
-      <xacro:apply_joint_force_plugin_macro motor_prefix="bl" />
-      <xacro:apply_joint_force_plugin_macro motor_prefix="fl" />
-      <xacro:apply_joint_force_plugin_macro motor_prefix="br" />
+      <xacro:macro_apply_joint_force_plugin motor_prefix="fr" />
+      <xacro:macro_apply_joint_force_plugin motor_prefix="bl" />
+      <xacro:macro_apply_joint_force_plugin motor_prefix="fl" />
+      <xacro:macro_apply_joint_force_plugin motor_prefix="br" />
 
       <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
         <fdm_addr>127.0.0.1</fdm_addr>

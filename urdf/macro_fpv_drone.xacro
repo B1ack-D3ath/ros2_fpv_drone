@@ -17,16 +17,16 @@
 
     <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
       parent_link="${namespace}_base_link"
-      prefix="fr" rgb="${rgb_ccw}" rpy="0 0 0" xyz="0.13541 -0.11532 0.01837" />
+      prefix="fr" rgb="${rgb_ccw}" rpy="0 0 0" xyz="0.1354 -0.11535 0.018367" />
     <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
       parent_link="${namespace}_base_link"
-      prefix="bl" rgb="${rgb_ccw}" rpy="0 0 0" xyz="-0.08106 0.11675 0.018367" />
+      prefix="bl" rgb="${rgb_ccw}" rpy="0 0 0" xyz="-0.081 0.1168 0.018367" />
     <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
       parent_link="${namespace}_base_link"
-      prefix="fl" rgb="${rgb_cw}" rpy="0 0 0" xyz="0.1353 0.11683 0.01837" />
+      prefix="fl" rgb="${rgb_cw}" rpy="0 0 0" xyz="0.1354 0.1168 0.018367" />
     <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
       parent_link="${namespace}_base_link"
-      prefix="br" rgb="${rgb_cw}" rpy="0 0 0" xyz="-0.08098 -0.11539 0.01837" />
+      prefix="br" rgb="${rgb_cw}" rpy="0 0 0" xyz="-0.081 -0.11535 0.018367" />
 
     <gazebo>
       <plugin
