@@ -75,10 +75,10 @@ def launch_opaque_function(context, *args, **kwargs):
         executable='create',
         output='screen',
         arguments=['-string', test_model_desc,
-                   '-x', pose[0], '-y', pose[1], '-z', pose[2],
-                   '-R', '0.0', '-P', '0.0', '-Y', pose[3],
-                   '-name', test_model,
-                   '-allow_renaming', 'false'],
+                '-x', pose[0], '-y', pose[1], '-z', pose[2],
+                '-R', '0.0', '-P', '0.0', '-Y', pose[3],
+                '-name', test_model,
+                '-allow_renaming', 'false'],
     )
     
     run_list.append(gz_spawn_entity)
@@ -90,32 +90,20 @@ def launch_opaque_function(context, *args, **kwargs):
         namespace=test_model,
         output="screen",
         parameters=[{'robot_description': test_model_desc,
-                     'use_sim_time': True}]
+                    'use_sim_time': True}]
     )
     
     run_list.append(robot_state_publisher)
-
-    """
-    bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        parameters=[{
-            'config_file': os.path.join(this_pkg_path, 'config', 'gz_bridge.yaml'),
-            'qos_overrides./tf_static.publisher.durability': 'transient_local',
-        }],
-        output='screen'
-    )"""
     
-    # Bridge
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=[             # ign topic -t <topic_name> --info
+        arguments=[
             '/world/soylu/model/'+test_model+'/joint_state@sensor_msgs/msg/JointState[gz.msgs.Model',
         ],
         parameters=[{'qos_overrides./model/'+test_model+'.subscriber.reliability': 'reliable'}],
         output='screen',
-        remappings=[            # ign topic -l
+        remappings=[
             ('/world/soylu/model/'+test_model+'/joint_state', '/'+test_model+'/joint_states'),
         ]
     )
@@ -131,8 +119,6 @@ def launch_opaque_function(context, *args, **kwargs):
                         '--console',
                         '--model', 'JSON',
                         '-L', 'Soylu',
-                        # '-L Soylu' argümanı sürüde çakışmaya neden olacağı için
-                        # kaldırıldı. 'gazebo-fpv' modeli pozisyonunu Gazebo'dan alır.
                     ],
                     output='screen'
                 )
