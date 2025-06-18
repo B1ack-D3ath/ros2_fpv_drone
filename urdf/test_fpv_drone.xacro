@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot name="test_fpv_drone" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find fpv_drone)/urdf/macro_fpv_drone.xacro" />
+
+  <xacro:arg name="package_name" default="fpv_drone" />
+  <xacro:arg name="namespace" default="fpv_drone" />
+  <xacro:arg name="rgb_base" default="0.0625 0 0.25" />
+  <xacro:arg name="rgb_cam" default="0 1 1" />
+  <xacro:arg name="rgb_ccw" default="1 0 0" />
+  <xacro:arg name="rgb_cw" default="0 0 1" />
+  <xacro:arg name="rpy" default="0 0 0" />
+  <xacro:arg name="xyz" default="0 0 0" />
+
+  <xacro:property name="package_name" value="$(arg package_name)" />
+  <xacro:property name="namespace" value="$(arg namespace)" />
+  <xacro:property name="rgb_base" value="$(arg rgb_base)" />
+  <xacro:property name="rgb_cam" value="$(arg rgb_cam)" />
+  <xacro:property name="rgb_ccw" value="$(arg rgb_ccw)" />
+  <xacro:property name="rgb_cw" value="$(arg rgb_cw)" />
+  <xacro:property name="rpy" value="$(arg rpy)" />
+  <xacro:property name="xyz" value="$(arg xyz)" />
+
+  <xacro:property name="parent_link" value="${namespace}_footprint" />
+
+  <xacro:property name="use_sim_time" value="true" />
+
+  <link name="${parent_link}" />
+
+  <xacro:macro_fpv_drone package_name="${package_name}" namespace="${namespace}"
+    parent_link="${parent_link}" rgb_base="${rgb_base}" rgb_cam="${rgb_cam}"
+    rgb_ccw="${rgb_ccw}" rgb_cw="${rgb_cw}" rpy="${rpy}" xyz="${xyz}" />
+
+</robot>

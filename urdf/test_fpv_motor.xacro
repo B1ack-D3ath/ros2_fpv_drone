@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot name="test_fpv_motor" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find fpv_drone)/urdf/macro_fpv_motor.xacro" />
+
+  <xacro:arg name="package_name" default="fpv_drone" />
+  <xacro:arg name="namespace" default="fpv_drone" />
+
+  <xacro:property name="package_name" value="$(arg package_name)" />
+  <xacro:property name="namespace" value="$(arg namespace)" />
+
+  <xacro:property name="parent_link" value="${namespace}_footprint" />
+
+  <xacro:property name="use_sim_time" value="true" />
+
+  <link name="${parent_link}">
+    <inertial>
+      <mass value="0.01" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="1e-6" ixy="0.0" ixz="0.0" iyy="1e-6" iyz="0.0" izz="1e-6" />
+    </inertial>
+
+    <collision name="${parent_link}_collision">
+      <geometry>
+        <box size="0.22 0.22 0.01" />
+      </geometry>
+      <origin xyz="0 0 0" />
+    </collision>
+  </link>
+
+  <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
+    parent_link="${parent_link}" prefix="fr" rgb="1 0 0" xyz="0.1 -0.1 0.01" />
+  <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
+    parent_link="${parent_link}" prefix="bl" rgb="1 0 0" xyz="-0.1 0.1 0.01" />
+  <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
+    parent_link="${parent_link}" prefix="fl" rgb="0 1 0" xyz="0.1 0.1 0.01" />
+  <xacro:macro_fpv_motor package_name="${package_name}" namespace="${namespace}"
+    parent_link="${parent_link}" prefix="br" rgb="0 1 0" xyz="-0.1 -0.1 0.01" />
+
+</robot>

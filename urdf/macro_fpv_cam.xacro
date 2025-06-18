@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="macro_fpv_cam"
+    params="package_name:='fpv_drone' namespace:='fpv_drone' parent_link:='fpv_drone_footprint' rgb:='0 1 1' rpy:='0 0 0' xyz:='0 0 0'">
+
+    <link name="${namespace}_cam_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.005036186" />
+        <inertia ixx="2.2237e-07" ixy="5.4652e-12" ixz="2.2453e-12" iyy="1.3962e-07"
+          iyz="-2.5999e-10" izz="1.4067e-07" />
+      </inertial>
+
+      <visual name="${namespace}_cam_visual">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/fpv_drone/fpv_cam.stl" scale="1 1 1" />
+        </geometry>
+        <material name="${namespace}_cam_material">
+          <color rgba="${rgb} 1" />
+        </material>
+      </visual>
+
+      <collision name="${namespace}_cam_collision">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/fpv_drone/fpv_cam.stl" scale="1 1 1" />
+        </geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="${namespace}_cam_link">
+      <visual name="${namespace}_cam_visual">
+        <material>
+          <diffuse>${rgb} 1</diffuse>
+          <ambient>${rgb} 1</ambient>
+          <specular>1 1 1 1</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <joint name="${namespace}_cam_joint" type="fixed">
+      <parent link="${parent_link}" />
+      <child link="${namespace}_cam_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+    </joint>
+
+    <gazebo>
+      <plugin
+        filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

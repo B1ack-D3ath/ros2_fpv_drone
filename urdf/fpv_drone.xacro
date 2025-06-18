@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot name="fpv_drone" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="package_name" default="fpv_drone" />
+  <xacro:arg name="robot_name" default="fpv_drone" />
+  <xacro:arg name="rgb_base" default="0.0625 0 0.25" />
+  <xacro:arg name="rgb_cam" default="0 1 1" />
+  <xacro:arg name="rgb_ccw" default="1 0 0" />
+  <xacro:arg name="rgb_cw" default="0 0 1" />
+
+  <xacro:property name="package_name" value="$(arg package_name)" />
+  <xacro:property name="robot_name" value="$(arg robot_name)" />
+  <xacro:property name="rgb_base" value="$(arg rgb_base)" />
+  <xacro:property name="rgb_cam" value="$(arg rgb_cam)" />
+  <xacro:property name="rgb_ccw" value="$(arg rgb_ccw)" />
+  <xacro:property name="rgb_cw" value="$(arg rgb_cw)" />
+
+  <xacro:property name="use_sim_time" value="true" />
+
+  <xacro:include filename="$(find ${package_name})/urdf/fpv_link_base.xacro" />
+  <xacro:include filename="$(find ${package_name})/urdf/fpv_link_cam.xacro" />
+  <xacro:include filename="$(find ${package_name})/urdf/fpv_link_motor.xacro" />
+
+  <xacro:fpv_link_base package_name="${package_name}" rgb="${rgb_base}" />
+
+  <xacro:fpv_link_cam package_name="${package_name}" parent_link="base_link" rgb="${rgb_cam}"
+    rpy="0 -0.47787 0" xyz="0.16346 -0.0002193 0.0023036" />
+
+  <xacro:fpv_link_motor package_name="${package_name}" parent_link="base_link" prefix="fr"
+    rgb="${rgb_ccw}" rpy="0 0 0" xyz="0.13541 -0.11532 0.01837" />
+  <xacro:fpv_link_motor package_name="${package_name}" parent_link="base_link" prefix="bl"
+    rgb="${rgb_ccw}" rpy="0 0 0" xyz="-0.08106 0.11675 0.018367" />
+  <xacro:fpv_link_motor package_name="${package_name}" parent_link="base_link" prefix="fl"
+    rgb="${rgb_cw}" rpy="0 0 0" xyz="0.1353 0.11683 0.01837" />
+  <xacro:fpv_link_motor package_name="${package_name}" parent_link="base_link" prefix="br"
+    rgb="${rgb_cw}" rpy="0 0 0" xyz="-0.08098 -0.11539 0.01837" />
+
+  <gazebo>
+    <plugin
+      filename="gz-sim-joint-state-publisher-system"
+      name="gz::sim::systems::JointStatePublisher">
+    </plugin>
+  </gazebo>
+</robot>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="fpv_drone">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.00249003605136822 2.23484753574324E-06 -8.70340703909012E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.654458956823632" />
+      <inertia
+        ixx="0.000391701028628766"
+        ixy="-3.01459266176232E-07"
+        ixz="2.17492542035836E-05"
+        iyy="0.00159433402169008"
+        iyz="2.46131237592157E-08"
+        izz="0.00177095261936595" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/base_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/base_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="motor_fr_link">
+    <inertial>
+      <origin
+        xyz="-2.38500909948147E-05 1.54117701944845E-06 -0.015218397996398"
+        rpy="0 0 0" />
+      <mass
+        value="0.00576442387217428" />
+      <inertia
+        ixx="1.51106803466048E-06"
+        ixy="8.98783730885909E-10"
+        ixz="-1.1158323696386E-10"
+        iyy="1.51182695549402E-06"
+        iyz="-9.33906806792813E-11"
+        izz="2.81344316683438E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_fr_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_fr_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor_fr_joint"
+    type="continuous">
+    <origin
+      xyz="0.143126912943831 -0.116093156523998 0.017373810535891"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_fr_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_fl_link">
+    <inertial>
+      <origin
+        xyz="-1.85093787954393E-05 -2.91408097166657E-07 -0.0152172066615232"
+        rpy="0 0 0" />
+      <mass
+        value="0.00576557526611092" />
+      <inertia
+        ixx="1.51149986412753E-06"
+        ixy="-5.13356130432017E-10"
+        ixz="-1.71497065666247E-10"
+        iyy="1.51285889730977E-06"
+        iyz="1.44036055684269E-11"
+        izz="2.81489946304568E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_fl_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0.0156862745098039 0.0588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_fl_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor_fl_joint"
+    type="continuous">
+    <origin
+      xyz="0.143016895178546 0.116052519836752 0.0173738105358793"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_fl_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_br_link">
+    <inertial>
+      <origin
+        xyz="-1.84980325594886E-05 -3.59127961452321E-07 -0.0152171927363173"
+        rpy="0 0 0" />
+      <mass
+        value="0.0057655799391229" />
+      <inertia
+        ixx="1.51150001269706E-06"
+        ixy="-5.11347063450739E-10"
+        ixz="-1.72030740671937E-10"
+        iyy="1.51286107893866E-06"
+        iyz="1.40329523816954E-11"
+        izz="2.81490187063425E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_br_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_br_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor_br_joint"
+    type="continuous">
+    <origin
+      xyz="-0.0732570741396252 -0.116168033240677 0.0173738105358792"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_br_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="motor_bl_link">
+    <inertial>
+      <origin
+        xyz="-2.38208002822926E-05 1.51562677723482E-06 -0.0152183970453187"
+        rpy="0 0 0" />
+      <mass
+        value="0.00576442541508705" />
+      <inertia
+        ixx="1.5110710735373E-06"
+        ixy="8.98672734617062E-10"
+        ixz="-1.11569795809127E-10"
+        iyy="1.51182643180542E-06"
+        iyz="-9.38478177831409E-11"
+        izz="2.81344563745385E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_bl_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0.0156862745098039 0.0588235294117647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/motor_bl_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="motor_bl_joint"
+    type="continuous">
+    <origin
+      xyz="-0.0733386657069142 0.11597758812328 0.0173738105358793"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="motor_bl_link" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="cam_link">
+    <inertial>
+      <origin
+        xyz="-0.0125983648388273 -4.55952111972496E-07 3.30188889482441E-05"
+        rpy="0 0 0" />
+      <mass
+        value="0.00503618661658231" />
+      <inertia
+        ixx="2.22372734138042E-07"
+        ixy="5.46187335598606E-12"
+        ixz="2.2495040280196E-12"
+        iyy="1.39620636185397E-07"
+        iyz="-2.59990798016097E-10"
+        izz="1.4066829787497E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/cam_link.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.964705882352941 0.964705882352941 0.952941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://fpv_drone/meshes/fpv_drone/cam_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="cam_joint"
+    type="fixed">
+    <origin
+      xyz="0.170544857626082 -6.33497183116193E-05 0.0013876838389833"
+      rpy="0 -0.451310061201651 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="cam_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

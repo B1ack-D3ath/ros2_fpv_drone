@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="macro_fpv_ardupilot"
+    params="package_name:='fpv_drone' namespace:='fpv_drone' parent_link:='fpv_drone_footprint' rgb_base:='0.0625 0 0.25' rgb_cam:='0 1 1' rgb_ccw:='1 0 0' rgb_cw:='0 0 1'  rpy:='0 0 0' xyz:='0 0 0' instance:='0'">
+
+    <xacro:property name="SITL_PORT" value="${9002 + int(instance) * 10}" />
+
+    <xacro:include filename="$(find ${package_name})/urdf/macro_fpv_drone.xacro" />
+
+    <xacro:macro_fpv_drone package_name="${package_name}" namespace="${namespace}"
+      parent_link="${parent_link}" rgb_base="${rgb_base}" rgb_cam="${rgb_cam}"
+      rgb_ccw="${rgb_ccw}" rgb_cw="${rgb_cw}" rpy="${rpy}" xyz="${xyz}" />
+
+    <gazebo>
+      <xacro:macro name="liftdrag_plugin_macro" params="motor_prefix cp_vec fwd_vec">
+        <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
+          <link_name>${namespace}_motor_${motor_prefix}_link</link_name>
+          <a0>0.3</a0>
+          <alpha_stall>1.4</alpha_stall>
+          <cla>4.2500</cla>
+          <cda>0.10</cda>
+          <cma>0.0</cma>
+          <cla_stall>-0.025</cla_stall>
+          <cda_stall>0.0</cda_stall>
+          <cma_stall>0.0</cma_stall>
+          <area>0.002</area>
+          <air_density>1.2041</air_density>
+          <cp>${cp_vec}</cp>
+          <forward>${fwd_vec}</forward>
+          <upward>0 0 1</upward>
+        </plugin>
+      </xacro:macro>
+
+      <xacro:liftdrag_plugin_macro motor_prefix="fr" cp_vec="0.084 0 0"
+        fwd_vec="0 1 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="fr" cp_vec="-0.042 0.0727 0"
+        fwd_vec="-0.866 -0.5 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="fr" cp_vec="-0.042 -0.0727 0"
+        fwd_vec="0.866 -0.5 0" />
+
+      <xacro:liftdrag_plugin_macro motor_prefix="bl" cp_vec="0.084 0 0"
+        fwd_vec="0 1 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="bl" cp_vec="-0.042 0.0727 0"
+        fwd_vec="-0.866 -0.5 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="bl" cp_vec="-0.042 -0.0727 0"
+        fwd_vec="0.866 -0.5 0" />
+
+      <xacro:liftdrag_plugin_macro motor_prefix="fl" cp_vec="0.084 0 0"
+        fwd_vec="0 -1 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="fl" cp_vec="-0.042 0.0727 0"
+        fwd_vec="0.866 0.5 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="fl" cp_vec="-0.042 -0.0727 0"
+        fwd_vec="-0.866 0.5 0" />
+
+      <xacro:liftdrag_plugin_macro motor_prefix="br" cp_vec="0.084 0 0"
+        fwd_vec="0 -1 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="br" cp_vec="-0.042 0.0727 0"
+        fwd_vec="0.866 0.5 0" />
+      <xacro:liftdrag_plugin_macro motor_prefix="br" cp_vec="-0.042 -0.0727 0"
+        fwd_vec="-0.866 0.5 0" />
+
+      <!-- ApplyJointForce Eklentileri -->
+      <xacro:macro name="apply_joint_force_plugin_macro" params="motor_prefix">
+        <plugin filename="gz-sim-apply-joint-force-system"
+          name="gz::sim::systems::ApplyJointForce">
+          <joint_name>${namespace}_motor_${motor_prefix}_joint</joint_name>
+        </plugin>
+      </xacro:macro>
+
+      <xacro:apply_joint_force_plugin_macro motor_prefix="fr" />
+      <xacro:apply_joint_force_plugin_macro motor_prefix="bl" />
+      <xacro:apply_joint_force_plugin_macro motor_prefix="fl" />
+      <xacro:apply_joint_force_plugin_macro motor_prefix="br" />
+
+      <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
+        <fdm_addr>127.0.0.1</fdm_addr>
+        <fdm_port_in>${SITL_PORT}</fdm_port_in>
+        <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
+        <lock_step>1</lock_step>
+        <have_32_channels>0</have_32_channels>
+
+        <modelXYZToAirplaneXForwardZDown degrees="true">0 0 0 180 0 0</modelXYZToAirplaneXForwardZDown>
+        <gazeboXYZToNED degrees="true">0 0 0 180 0 90</gazeboXYZToNED>
+
+        <imuName>${namespace}_imu_link::${namespace}_imu_sensor</imuName>
+
+        <xacro:macro name="control_motor_macro" params="channel motor_prefix multiplier">
+          <control channel="${channel}">
+            <jointName>${namespace}_motor_${motor_prefix}_joint</jointName>
+            <useForce>1</useForce>
+            <multiplier>${multiplier}</multiplier>
+            <offset>0</offset>
+            <servo_min>1100</servo_min>
+            <servo_max>1900</servo_max>
+            <type>VELOCITY</type>
+            <p_gain>0.20</p_gain>
+            <i_gain>0</i_gain>
+            <d_gain>0</d_gain>
+            <i_max>0</i_max>
+            <i_min>0</i_min>
+            <cmd_max>2.5</cmd_max>
+            <cmd_min>-2.5</cmd_min>
+            <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+          </control>
+        </xacro:macro>
+
+        <xacro:control_motor_macro channel="0" motor_prefix="fr" multiplier="838" />
+        <xacro:control_motor_macro channel="1" motor_prefix="bl" multiplier="838" />
+        <xacro:control_motor_macro channel="2" motor_prefix="fl" multiplier="-838" />
+        <xacro:control_motor_macro channel="3" motor_prefix="br" multiplier="-838" />
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

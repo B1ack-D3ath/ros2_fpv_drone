@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="macro_gimbal_3d"
+    params="package_name:='fpv_drone' namespace:='fpv_drone' parent_link:='fpv_drone_footprint' rgb:='0 1 1' instance:='0' rpy:='0 0 0' xyz:='0 0 0'">
+
+    <xacro:property name="pi" value="3.141592653589793" />
+    <xacro:property name="use_sim_time" value="true" />
+
+    <xacro:property name="gimbal_namespace" value="${namespace}_gimbal" />
+    <xacro:property name="STREAM_PORT" value="${5600 + int(instance) * 10}" />
+
+    <link name="${gimbal_namespace}_base_link">
+      <inertial>
+        <mass value="0.2" />
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+      </inertial>
+
+      <visual name="${gimbal_namespace}_base_visual">
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/gimbal_3d/base_plate.dae" />
+        </geometry>
+        <material name="${gimbal_namespace}_material">
+          <color rgba="${rgb} 1" />
+        </material>
+      </visual>
+
+      <collision name="${gimbal_namespace}_base_collision">
+        <origin xyz="0.01 0.075 -0.025" rpy="0 0 0" />
+        <geometry>
+          <box size="0.1 0.05 0.15" />
+        </geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="${gimbal_namespace}_base_link">
+      <visual name="${gimbal_namespace}_base_visual">
+        <material name="${gimbal_namespace}_material">
+          <diffuse>${rgb} 1</diffuse>
+          <ambient>${rgb} 1</ambient>
+          <specular>1 1 1 1</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <joint name="${gimbal_namespace}_base_joint" type="fixed">
+      <parent link="${parent_link}" />
+      <child link="${gimbal_namespace}_base_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <axis xyz="0 0 1">
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+      </axis>
+    </joint>
+
+    <link name="${gimbal_namespace}_yaw_link">
+      <inertial>
+        <mass value="0.01" />
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001" />
+      </inertial>
+
+      <visual name="${gimbal_namespace}_yaw_visual">
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/gimbal_3d/yaw_arm.dae" />
+        </geometry>
+        <material name="${gimbal_namespace}_material" />
+      </visual>
+
+      <collision name="${gimbal_namespace}_yaw_collision">
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/gimbal_3d/yaw_arm.dae" />
+        </geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="${gimbal_namespace}_yaw_link">
+      <visual name="${gimbal_namespace}_yaw_visual">
+        <material name="${gimbal_namespace}_material">
+          <diffuse>${rgb} 1</diffuse>
+          <ambient>${rgb} 1</ambient>
+          <specular>1 1 1 1</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <joint name="${gimbal_namespace}_yaw_joint" type="revolute">
+      <parent link="${gimbal_namespace}_base_link" />
+      <child link="${gimbal_namespace}_yaw_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit lower="${- pi}" upper="${pi}" effort="10" velocity="10" />
+      <dynamics damping="0.01" />
+    </joint>
+
+    <link name="${gimbal_namespace}_roll_link">
+      <inertial>
+        <mass value="0.01" />
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001" />
+      </inertial>
+
+      <visual name="${gimbal_namespace}_roll_visual">
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/gimbal_3d/roll_arm.dae" />
+        </geometry>
+        <material name="${gimbal_namespace}_material" />
+      </visual>
+
+      <collision name="${gimbal_namespace}_roll_collision">
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/gimbal_3d/roll_arm.dae" />
+        </geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="${gimbal_namespace}_roll_link">
+      <visual name="${gimbal_namespace}_roll_visual">
+        <material name="${gimbal_namespace}_material">
+          <diffuse>${rgb} 1</diffuse>
+          <ambient>${rgb} 1</ambient>
+          <specular>1 1 1 1</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <joint name="${gimbal_namespace}_roll_joint" type="revolute">
+      <parent link="${gimbal_namespace}_yaw_link" />
+      <child link="${gimbal_namespace}_roll_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${- pi}" upper="${pi}" effort="10" velocity="10" />
+      <dynamics damping="0.01" />
+    </joint>
+
+    <link name="${gimbal_namespace}_pitch_link">
+      <inertial>
+        <mass value="0.01" />
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001" />
+      </inertial>
+
+      <visual name="${gimbal_namespace}_camera_enclosure_visual">
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/gimbal_3d/camera_enclosure.dae" />
+        </geometry>
+        <material name="${gimbal_namespace}_material" />
+      </visual>
+
+      <collision name="${gimbal_namespace}_camera_enclosure_collision">
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/gimbal_3d/camera_enclosure.dae" />
+        </geometry>
+      </collision>
+
+      <visual name="${gimbal_namespace}_camera_body_visual">
+        <origin xyz="0 0 0.02" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.025" length="0.050" />
+        </geometry>
+        <material name="${gimbal_namespace}_material" />
+      </visual>
+
+      <collision name="${gimbal_namespace}_camera_body_collision">
+        <origin xyz="0 0 0.02" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.025" length="0.050" />
+        </geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="${gimbal_namespace}_pitch_link">
+      <visual name="${gimbal_namespace}_camera_enclosure_visual">
+        <material name="${gimbal_namespace}_material">
+          <diffuse>${rgb} 1</diffuse>
+          <ambient>${rgb} 1</ambient>
+          <specular>1 1 1 1</specular>
+        </material>
+      </visual>
+
+      <visual name="${gimbal_namespace}_camera_body_visual">
+        <material name="${gimbal_namespace}_material">
+          <diffuse>${rgb} 1</diffuse>
+          <ambient>${rgb} 1</ambient>
+          <specular>1 1 1 1</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <joint name="${gimbal_namespace}_pitch_joint" type="revolute">
+      <parent link="${gimbal_namespace}_roll_link" />
+      <child link="${gimbal_namespace}_pitch_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="${- pi}" upper="${pi}" effort="10" velocity="10" />
+      <dynamics damping="0.01" />
+    </joint>
+
+    <gazebo reference="${gimbal_namespace}_pitch_link">
+      <sensor name="${gimbal_namespace}_camera_sensor" type="camera">
+        <pose>0 0 0 ${- pi / 2} ${- pi / 2} 0</pose>
+        <camera>
+          <horizontal_fov>2.0</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>15000</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>true</visualize>
+
+        <plugin filename="CameraZoomPlugin"
+          name="CameraZoomPlugin">
+          <max_zoom>125.0</max_zoom>
+          <slew_rate>0.42514285714</slew_rate>
+        </plugin>
+
+        <plugin filename="GstCameraPlugin"
+          name="GstCameraPlugin">
+          <udp_host>127.0.0.1</udp_host>
+          <udp_port>${STREAM_PORT}</udp_port>
+          <use_basic_pipeline>true</use_basic_pipeline>
+          <use_cuda>false</use_cuda>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <gazebo>
+      <plugin
+        filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

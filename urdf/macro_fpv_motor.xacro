@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="macro_fpv_motor"
+    params="package_name:='fpv_drone' namespace:='fpv_drone' parent_link:='fpv_drone_footprint' prefix:='fr' rgb:='1 1 1' rpy:='0 0 0' xyz:='0 0 0'">
+
+    <link name="${namespace}_motor_${prefix}_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.0025" />
+        <inertia ixx="1.28e-06" ixy="0" ixz="0" iyy="1.28e-06" iyz="0" izz="2.54e-06" />
+      </inertial>
+
+      <visual name="${namespace}_motor_${prefix}_visual">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/fpv_drone/fpv_motor_${prefix}.stl"
+            scale="1 1 1" />
+        </geometry>
+        <material name="${namespace}_motor_${prefix}_material">
+          <color rgba="${rgb} 1" />
+        </material>
+      </visual>
+
+      <collision name="${namespace}_motor_${prefix}_collision">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <cylinder length="0.001" radius="0.0635" />
+        </geometry>
+      </collision>
+    </link>
+
+    <gazebo reference="${namespace}_motor_${prefix}_link">
+      <visual name="${namespace}_motor_${prefix}_visual">
+        <material>
+          <diffuse>${rgb} 1</diffuse>
+          <ambient>${rgb} 1</ambient>
+          <specular>1 1 1 1</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <joint name="${namespace}_motor_${prefix}_joint" type="revolute">
+      <parent link="${parent_link}" />
+      <child link="${namespace}_motor_${prefix}_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1e+16" upper="1e+16" effort="1000" velocity="1000" />
+      <dynamics damping="0.004" />
+    </joint>
+
+    <gazebo>
+      <plugin
+        filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+</robot>

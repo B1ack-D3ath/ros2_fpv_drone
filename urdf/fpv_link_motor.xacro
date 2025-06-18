@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="fpv_link_motor" params="package_name parent_link prefix rgb rpy xyz">
+    <link name="motor_${prefix}_link"> <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.0025"/>
+        <inertia ixx="1.28e-06" ixy="0" ixz="0" iyy="1.28e-06" iyz="0" izz="2.54e-06"/>
+      </inertial>
+      
+      <visual name="motor_${prefix}_link_visiual">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/fpv_drone/motor_${prefix}_link.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="motor_${prefix}_link_material">
+          <color rgba="${rgb} 1"/>
+        </material>
+      </visual>
+
+      <collision name="motor_${prefix}_link_collision">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.001" radius="0.0635"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="motor_${prefix}_joint" type="revolute">
+      <parent link="${parent_link}"/>
+      <child link="motor_${prefix}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-1e+16" upper="1e+16" effort="1000" velocity="1000"/>
+      <dynamics damping="0.004"/>
+    </joint>
+
+    <gazebo reference="motor_${prefix}_link">
+        <visual name="motor_${prefix}_link_visual">
+          <material>
+            <diffuse>${rgb} 1</diffuse>
+            <ambient>${rgb} 1</ambient>
+            <specular>1 1 1 1</specular>
+          </material>
+        </visual>
+    </gazebo>
+
+  </xacro:macro>
+</robot>
