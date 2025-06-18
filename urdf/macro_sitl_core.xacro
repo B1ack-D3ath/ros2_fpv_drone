@@ -1,16 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
-  <xacro:macro name="macro_fpv_ardupilot"
-    params="package_name:='fpv_drone' namespace:='fpv_drone' parent_link:='fpv_drone_footprint' rgb_base:='0.0625 0 0.25' rgb_cam:='0 1 1' rgb_ccw:='1 0 0' rgb_cw:='0 0 1'  rpy:='0 0 0' xyz:='0 0 0' instance:='0'">
+  <xacro:macro name="macro_sitl_core"
+    params="package_name:='fpv_drone' namespace:='fpv_drone' instance:='0'">
 
     <xacro:property name="SITL_PORT" value="${9002 + int(instance) * 10}" />
-
-    <xacro:include filename="$(find ${package_name})/urdf/macro_fpv_drone.xacro" />
-
-    <xacro:macro_fpv_drone package_name="${package_name}" namespace="${namespace}"
-      parent_link="${parent_link}" rgb_base="${rgb_base}" rgb_cam="${rgb_cam}"
-      rgb_ccw="${rgb_ccw}" rgb_cw="${rgb_cw}" rpy="${rpy}" xyz="${xyz}" />
 
     <gazebo>
       <xacro:macro name="liftdrag_plugin_macro" params="motor_prefix cp_vec fwd_vec">
@@ -59,7 +52,6 @@
         fwd_vec="0.866 0.5 0" />
       <xacro:liftdrag_plugin_macro motor_prefix="br" cp_vec="-0.042 -0.0727 0"
         fwd_vec="-0.866 0.5 0" />
-
 
       <xacro:macro name="apply_joint_force_plugin_macro" params="motor_prefix">
         <plugin filename="gz-sim-apply-joint-force-system"
