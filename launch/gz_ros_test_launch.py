@@ -109,20 +109,6 @@ def launch_opaque_function(context, *args, **kwargs):
     )
     
     run_list.append(bridge)
-    
-    if model == 'fpv_ardupilot':
-        sitl_process = ExecuteProcess(
-                    cmd=[
-                        'sim_vehicle.py',
-                        '-v', 'ArduCopter',
-                        '-f', 'gazebo-fpv',
-                        '--console',
-                        '--model', 'JSON',
-                        '-L', 'Soylu',
-                    ],
-                    output='screen'
-                )
-        run_list.append(sitl_process)
 
     return run_list    
 
