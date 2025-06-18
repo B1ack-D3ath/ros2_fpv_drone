@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="macro_sitl_gimbal"
+    params="namespace:='fpv_drone'">
+
+    <gazebo>
+      <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
+        <xacro:macro name="macro_control_gimbal" params="channel prefix multiplier offset">
+          <control channel="${channel}">
+            <jointName>${namespace}_gimbal_${prefix}_joint</jointName>
+            <multiplier>${multiplier}</multiplier>
+            <offset>${offset}</offset>
+            <servo_min>1100</servo_min>
+            <servo_max>1900</servo_max>
+            <type>COMMAND</type>
+            <cmd_topic>${namespace}_gimbal_${prefix}_cmd</cmd_topic>
+            <p_gain>2</p_gain>
+          </control>
+        </xacro:macro>
+
+        <xacro:macro_control_gimbal channel="8" prefix="roll" multiplier="1.047197551196"
+          offset="-0.5" />
+        <xacro:macro_control_gimbal channel="9" prefix="pitch" multiplier="-3.14159265"
+          offset="-0.75" />
+        <xacro:macro_control_gimbal channel="10" prefix="yaw" multiplier="-5.5850536" offset="-0.5" />
+      </plugin>
+
+      <xacro:macro name="macro_joint_position_controller" params="prefix">
+        <plugin
+          filename="gz-sim-joint-position-controller-system"
+          name="gz::sim::systems::JointPositionController">
+          <joint>${namespace}_gimbal_${prefix}_joint</joint>
+          <topic>${namespace}_gimbal_${prefix}_cmd</topic>
+          <p_gain>2</p_gain>
+        </plugin>
+      </xacro:macro>
+
+      <xacro:macro_joint_position_controller prefix="roll" />
+      <xacro:macro_joint_position_controller prefix="pitch" />
+      <xacro:macro_joint_position_controller prefix="yaw" />
+    </gazebo>
+  </xacro:macro>
+</robot>

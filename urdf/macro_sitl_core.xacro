@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:macro name="macro_sitl_core"
-    params="package_name:='fpv_drone' namespace:='fpv_drone' instance:='0'">
+    params="namespace:='fpv_drone' instance:='0'">
 
     <xacro:property name="SITL_PORT" value="${9002 + int(instance) * 10}" />
 
     <gazebo>
-      <xacro:macro name="liftdrag_plugin_macro" params="motor_prefix cp_vec fwd_vec">
+      <xacro:macro name="macro_liftdrag_plugin" params="motor_prefix cp_vec fwd_vec">
         <plugin filename="gz-sim-lift-drag-system" name="gz::sim::systems::LiftDrag">
           <link_name>${namespace}_motor_${motor_prefix}_link</link_name>
           <a0>0.3</a0>
@@ -25,32 +25,32 @@
         </plugin>
       </xacro:macro>
 
-      <xacro:liftdrag_plugin_macro motor_prefix="fr" cp_vec="0.084 0 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="fr" cp_vec="0.084 0 0"
         fwd_vec="0 1 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="fr" cp_vec="-0.042 0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="fr" cp_vec="-0.042 0.0727 0"
         fwd_vec="-0.866 -0.5 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="fr" cp_vec="-0.042 -0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="fr" cp_vec="-0.042 -0.0727 0"
         fwd_vec="0.866 -0.5 0" />
 
-      <xacro:liftdrag_plugin_macro motor_prefix="bl" cp_vec="0.084 0 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="bl" cp_vec="0.084 0 0"
         fwd_vec="0 1 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="bl" cp_vec="-0.042 0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="bl" cp_vec="-0.042 0.0727 0"
         fwd_vec="-0.866 -0.5 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="bl" cp_vec="-0.042 -0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="bl" cp_vec="-0.042 -0.0727 0"
         fwd_vec="0.866 -0.5 0" />
 
-      <xacro:liftdrag_plugin_macro motor_prefix="fl" cp_vec="0.084 0 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="fl" cp_vec="0.084 0 0"
         fwd_vec="0 -1 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="fl" cp_vec="-0.042 0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="fl" cp_vec="-0.042 0.0727 0"
         fwd_vec="0.866 0.5 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="fl" cp_vec="-0.042 -0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="fl" cp_vec="-0.042 -0.0727 0"
         fwd_vec="-0.866 0.5 0" />
 
-      <xacro:liftdrag_plugin_macro motor_prefix="br" cp_vec="0.084 0 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="br" cp_vec="0.084 0 0"
         fwd_vec="0 -1 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="br" cp_vec="-0.042 0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="br" cp_vec="-0.042 0.0727 0"
         fwd_vec="0.866 0.5 0" />
-      <xacro:liftdrag_plugin_macro motor_prefix="br" cp_vec="-0.042 -0.0727 0"
+      <xacro:macro_liftdrag_plugin motor_prefix="br" cp_vec="-0.042 -0.0727 0"
         fwd_vec="-0.866 0.5 0" />
 
       <xacro:macro name="apply_joint_force_plugin_macro" params="motor_prefix">
@@ -77,7 +77,7 @@
 
         <imuName>${namespace}_imu_link::${namespace}_imu_sensor</imuName>
 
-        <xacro:macro name="control_motor_macro" params="channel motor_prefix multiplier">
+        <xacro:macro name="macro_control_motor" params="channel motor_prefix multiplier">
           <control channel="${channel}">
             <jointName>${namespace}_motor_${motor_prefix}_joint</jointName>
             <useForce>1</useForce>
@@ -97,10 +97,10 @@
           </control>
         </xacro:macro>
 
-        <xacro:control_motor_macro channel="0" motor_prefix="fr" multiplier="838" />
-        <xacro:control_motor_macro channel="1" motor_prefix="bl" multiplier="838" />
-        <xacro:control_motor_macro channel="2" motor_prefix="fl" multiplier="-838" />
-        <xacro:control_motor_macro channel="3" motor_prefix="br" multiplier="-838" />
+        <xacro:macro_control_motor channel="0" motor_prefix="fr" multiplier="838" />
+        <xacro:macro_control_motor channel="1" motor_prefix="bl" multiplier="838" />
+        <xacro:macro_control_motor channel="2" motor_prefix="fl" multiplier="-838" />
+        <xacro:macro_control_motor channel="3" motor_prefix="br" multiplier="-838" />
       </plugin>
     </gazebo>
   </xacro:macro>
