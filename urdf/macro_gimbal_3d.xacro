@@ -10,6 +10,50 @@
     <xacro:property name="pi" value="3.141592653589793" />
     <xacro:property name="use_sim_time" value="true" />
 
+    <link name="${namespace_gimbal}_standoffs_link">
+      <inertial>
+        <mass value="0.01" />
+        <inertia ixx="0.00001" ixy="0" ixz="0" iyy="0.00001" iyz="0" izz="0.00001" />
+      </inertial>
+
+      <xacro:macro name="macro_standoffs_link" params="prefix size rpy xyz">
+        <visual name="${namespace_gimbal}_standoffs_visual_${prefix}">
+          <origin xyz="${xyz}" rpy="${rpy}" />
+          <geometry>
+            <box size="${size}" />
+          </geometry>
+          <material name="${namespace_gimbal}_material">
+            <color rgba="${rgb} 1" />
+          </material>
+        </visual>
+
+        <collision name="${namespace_gimbal}_standoffs_collision_${prefix}">
+          <origin xyz="${xyz}" rpy="${rpy}" />
+          <geometry>
+            <box size="${size}" />
+          </geometry>
+        </collision>
+      </xacro:macro>
+
+      <xacro:macro_standoffs_link prefix="fr" size="0.01 0.01 0.2"
+        rpy="0 0 0" xyz="0.12 -0.11 -0.11" />
+      <xacro:macro_standoffs_link prefix="fl" size="0.01 0.01 0.2"
+        rpy="0 0 0" xyz="-0.08 -0.11 -0.11" />
+      <xacro:macro_standoffs_link prefix="br" size="0.01 0.01 0.2"
+        rpy="0 0 0" xyz="0.12 0.11 -0.11" />
+      <xacro:macro_standoffs_link prefix="bl" size="0.01 0.01 0.2"
+        rpy="0 0 0" xyz="-0.08 0.11 -0.11" />
+    </link>
+
+    <joint name="${namespace_gimbal}_standoffs_joint" type="fixed">
+      <parent link="${parent_link}" />
+      <child link="${namespace_gimbal}_standoffs_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <axis xyz="0 0 1">
+        <limit lower="0" upper="0" effort="0" velocity="0" />
+      </axis>
+    </joint>
+
     <link name="${namespace_gimbal}_base_link">
       <inertial>
         <mass value="0.2" />

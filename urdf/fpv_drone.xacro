@@ -35,20 +35,15 @@
     parent_link="${parent_link}" rgb_base="${rgb_base}" rgb_cam="${rgb_cam}"
     rgb_ccw="${rgb_ccw}" rgb_cw="${rgb_cw}" rpy="${rpy}" xyz="${xyz}" />
 
-  <xacro:if value="${sitl}">
-    <xacro:include filename="$(find fpv_drone)/urdf/macro_sitl_core.xacro" />
-    <xacro:macro_sitl_core namespace="${namespace}" instance="${instance}" />
-  </xacro:if>
-
   <xacro:if value="${gimbal}">
     <xacro:include filename="$(find fpv_drone)/urdf/macro_gimbal_3d.xacro" />
-    <xacro:macro_gimbal_3d_macro package_name="${package_name}" namespace="${namespace}"
+    <xacro:macro_gimbal_3d package_name="${package_name}" namespace="${namespace}"
       parent_link="${parent_link}" rgb="${rgb_cam}" instance="${instance}"
-      rpy="1.5707963267948966 0 1.5707963267948966" xyz="0 0 -0.03925" />
+      rpy="1.5707963267948966 0 1.5707963267948966" xyz="0 -0.01 -0.11775" />
+  </xacro:if>
 
-    <xacro:if value="${sitl}">
-      <xacro:include filename="$(find fpv_drone)/urdf/macro_sitl_gimbal.xacro" />
-      <xacro:macro_sitl_gimbal namespace="${namespace}" />
-    </xacro:if>
+  <xacro:if value="${sitl}">
+    <xacro:include filename="$(find fpv_drone)/urdf/macro_sitl_core.xacro" />
+    <xacro:macro_sitl_core namespace="${namespace}" instance="${instance}" gimbal="${gimbal}" />
   </xacro:if>
 </robot>
